@@ -63,14 +63,19 @@ try {
 #### 开发插曲
 
 > 写此功能的时候，在微信开放社区找到一个写过次功能的哥们联系方式。本来想向他请教一下，以免自己少走弯路。没想到这哥们直接开口要 300 大洋....
+>
 > 看来没法偷懒了，只能自己写了。
+>
 > 在微信开放社区找到很多朋友分享的代码，非常感谢他们。
+>
 > 还有微信官方文档的微信签名 sdk , [https://github.com/snowlyg/wechatpay-guzzle-middleware](https://github.com/snowlyg/wechatpay-guzzle-middleware) 。
 
 
 #### 联系交流
 如果你发现了BUG或者有任何疑问、建议，请通过issue进行反馈。
+
 也可以加 QQ 群交流：676717248
+
 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=cc99ccf86be594e790eacc91193789746af7df4a88e84fe949e61e5c6d63537c"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Iris-go" title="Iris-go"></a>
 
 
