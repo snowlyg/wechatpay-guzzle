@@ -21,9 +21,8 @@ $merchantSerialNumber = 'XXXXXXXXXX'; // 商户API证书序列号
 $wechatpayCertificate = '/path/to/wechatpay/cert.pem'; // 微信支付平台证书
 $apiv3_key = '/path/to/wechatpay/cert.pem'; // API v3密钥 32 字节
 
-// 接下来，正常使用Guzzle发起API请求，WechatPayMiddleware会自动地处理签名和验签
+$http = new Http($merchantId,$merchantPrivateKey,$merchantPrivateKey,$wechatpayCertificate,$apiv3_key);    
 try {
-    $http = new Http($merchantId,$merchantPrivateKey,$merchantPrivateKey,$wechatpayCertificate,$apiv3_key);    
     // applyment_id 微信支付分的申请单号,提交申请单后返回
     $http->getWechatPay("applyment4sub/applyment/applyment_id/{applyment_id}"); 
     
