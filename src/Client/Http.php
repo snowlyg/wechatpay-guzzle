@@ -9,33 +9,49 @@
 namespace Snowlyg\WechatPay\Client;
 
 
+use app\common\model\ApplyStore;
+use app\common\service\XcxApi;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
+use Snowlyg\WechatPay\NoopValidator;
 use WechatPay\GuzzleMiddleware\Util\AesUtil;
 use WechatPay\GuzzleMiddleware\WechatPayMiddleware;
 use WechatPay\GuzzleMiddleware\Util\PemUtil;
+use WechatPay\GuzzleMiddleware\WechatPayMiddlewareBuilder;
 
+/**
+ * Class Http
+ *
+ * @package   Snowlyg\WechatPay\Client
+ * @author    snowlyg
+ * @datetime  2020/4/11 21:31
+ */
 class Http
 {
+    /**
+     * @var string
+     */
     protected $mch_id;//商户号id
+    /**
+     * @var string
+     */
     protected $mch_key;//商户号支付key
-    protected $ssl_cert_path; //服务商的api证书路径
     protected $ssl_key_path; //服务商的 api key路径
-    protected $merchantSerialNumber; //平台证书序列号
+    protected $merchantSerialNumber; //商户API证书序列号
 
     // 平台证书 用于加密数据
     protected $wechat_public_cert_path; //平台证书存放目录
-    protected $wechat_public_cert_fullpath; //平台证书路径
+    protected $wechat_public_cert_fullpath; //平台证书文件路径
     protected $serial_no; //平台证书序列号
 
     //API v3密钥 微信平台证书解密, 32 字节
     protected $apiv3_key;
-    // 图片上传使用
-    protected $boundary;
 
+    // 图片上传使用
+    const BOUNDARY = "sfdkewrdsfkd";
     // 请求基准路由
     const WechatPayURl = "https://api.mch.weixin.qq.com/v3/";
 
@@ -44,71 +60,92 @@ class Http
      *
      * @param  string  $mch_id
      * @param  string  $mch_key
-     * @param  string  $ssl_cert_path
+     * @param $merchantSerialNumber
      * @param  string  $ssl_key_path
-     * @param  string  $merchantSerialNumber
-     * @param  string  $str
      * @param  string  $wechat_public_cert
-     * @param  string  $serial_no
      * @param  string  $apiv3_key
      * @param  string  $boundary
      */
     public function __construct(
         $mch_id,
         $mch_key,
-        $ssl_cert_path,
-        $ssl_key_path,
         $merchantSerialNumber,
-        $str,
+        $ssl_key_path,
         $wechat_public_cert,
-        $serial_no,
         $apiv3_key,
         $boundary
     ) {
         $this->mch_id = $mch_id;
         $this->mch_key = $mch_key;
-        $this->ssl_cert_path = $ssl_cert_path;
-        $this->ssl_key_path = $ssl_key_path;
         $this->merchantSerialNumber = $merchantSerialNumber;
-        $this->str = $str;
+        $this->ssl_key_path = $ssl_key_path;
         $this->wechat_public_cert = $wechat_public_cert;
-        $this->serial_no = $serial_no;
         $this->apiv3_key = $apiv3_key;
         $this->boundary = $boundary;
     }
 
 
     /**
-     * 特约商户进件 微信支付 请求处理 v3
+     * getWechatPayMiddlewareBuilder 微信应答签名的验证中间件构建器
      *
-     * @return Client
+     * @return WechatPayMiddlewareBuilder
      * @author          snowlyg
      * @datetime        2020/4/4 13:01
      */
-    public function getWechatPayClient($first = false)
+    public function getWechatPayMiddlewareBuilder()
     {
-
         $merchantId = $this->mch_id;
         $merchantPrivateKey = PemUtil::loadPrivateKey($this->ssl_key_path);
-        $wechatpayCertificate = PemUtil::loadCertificate($this->ssl_cert_path);
 
-        $wechatpayMiddlewareBuilder = WechatPayMiddleware::builder()
-            ->withMerchant($merchantId, $this->merchantSerialNumber, $merchantPrivateKey);
+        return WechatPayMiddleware::builder()->withMerchant($merchantId, $this->merchantSerialNumber,
+            $merchantPrivateKey);
+    }
 
-        //设置一个空的应答签名验证器，**不要**用在业务请求
-        //使用WechatPayMiddlewareBuilder需要调用withWechatpay设置微信支付平台证书，而平台证书又只能通过调用获取平台证书接口下载。
-        //为了解开"死循环"，你可以在第一次下载平台证书时，按照下述方法临时"跳过”应答签名的验证。
-        if ($first) {
-            $wechatpayMiddleware = $wechatpayMiddlewareBuilder->withValidator(new NoopValidator)->build();
-        } else {
-            $wechatpayMiddleware = $wechatpayMiddlewareBuilder->withWechatPay([$wechatpayCertificate])->build();
-        }
+    /**
+     * getWechatpayMiddleware 微信应答签名的验证中间件
+     *
+     * @return WechatPayMiddleware
+     * @author    snowlyg
+     * @datetime  2020/4/11 21:32
+     */
+    public function getWechatpayMiddleware()
+    {
+        $wechatpayCertificate = PemUtil::loadCertificate($this->wechat_public_cert_fullpath);
+        return $this->getWechatPayMiddlewareBuilder()->withWechatPay([$wechatpayCertificate])->build();
+    }
 
+
+    /**
+     * getWechatpayMiddlewareWithNoAuth
+     *
+     * 使用 WechatPayMiddlewareBuilder 需要调用 withWechatpay 设置微信支付平台证书，
+     * 而平台证书又只能通过调用获取平台证书接口下载。为了解开"死循环"，你可以在第一次下载平台证书时，
+     * 按照下述方法临时"跳过”应答签名的验证。
+     *
+     * @return WechatPayMiddleware
+     * @author    snowlyg
+     * @datetime  2020/4/11 21:31
+     */
+    public function getWechatpayMiddlewareWithNoAuth()
+    {
+        return $this->getWechatPayMiddlewareBuilder()->withValidator(new NoopValidator)->build();
+    }
+
+    /**
+     * @param $wechatpayMiddleware
+     *
+     * @return Client
+     * @author    snowlyg
+     * @datetime  2020/4/11 21:32
+     */
+    public function getWechatPayClient($wechatpayMiddleware)
+    {
         $stack = HandlerStack::create();
         $stack->push($wechatpayMiddleware, 'wechatpay');
 
         return new Client(['handler' => $stack, "base_uri" => $this->str]);
     }
+
 
     /** postWechatPay  特约商户进件-提交申请单 v3
      *
@@ -122,9 +159,7 @@ class Http
      */
     public function postWechatPay($uri, $data)
     {
-
-        $client = $this->getWechatPayClient();
-
+        $client = $this->getWechatPayClient($this->getWechatpayMiddleware());
         $options = [
             'debug' => false,
             'json' => $data,
@@ -135,21 +170,14 @@ class Http
         ];
 
         try {
-            return $client->request("POST", $uri, $options, $data);
+            return $client->request("POST", $uri, $options);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
-            $status_code = "";
-            $contents = "";
-            if ($e->hasResponse()) {
-                $status_code = $e->getResponse()->getStatusCode();
-                $contents = $e->getResponse()->getBody()->getContents();
-            }
-
-            apiSuc([], $contents, $status_code);
+            throw $e;
         }
 
     }
 
-    /** postWechatPayImg  上传图片 v3
+    /** getWechatPayImghasd  上传图片
      *
      * @param $uri
      * @param $data
@@ -159,51 +187,46 @@ class Http
      * @author    snowlyg
      * @datetime  2020/4/8 0:09
      */
-    public function postWechatPayImg($uri, $data)
+    public function getWechatPayImghasd($filepath)
     {
+        $imginfo     = pathinfo($filepath);
+        $picturedata = file_get_contents($filepath);
+        $sign        = hash('sha256', $picturedata);
+        $meta        = [
+            "filename" => $imginfo['basename'],
+            "sha256"   => $sign,
+        ];
 
-        $client = $this->getWechatPayClient();
-        $filestr = json_encode($data["meta"]);
-        $boundarystr = "--{$this->boundary}\r\n";
-        $out = $boundarystr;
-        $out .= 'Content-Disposition: form-data; name="meta";'."\r\n";
-        $out .= 'Content-Type: application/json; charset=UTF-8'."\r\n";
-        $out .= "\r\n";
-        $out .= "".$filestr."\r\n";
-        $out .= $boundarystr;
-        $out .= 'Content-Disposition: form-data; name="file"; filename="'.$data["meta"]["filename"].'";'."\r\n";
-        $out .= 'Content-Type: image/'.$data['ext'].';'."\r\n";
-        $out .= "\r\n";
-        $out .= $data["file"]."\r\n";
-        $out .= "--{$this->boundary}--\r\n";
+        $filestr = json_encode($meta);
+        $output  = $this->getBody($filestr, $imginfo, $picturedata);
 
-        $body = \GuzzleHttp\Psr7\stream_for($out);
+        $body    = \GuzzleHttp\Psr7\stream_for($output);
         $options = [
-            'debug' => true,
-            "body" => $body,
-            'headers' => [
-                'Accept' => 'application/json',
+            'http_errors' => false,
+            'debug'       => false,
+            "body"        => $body,
+            "metaJson"     => $filestr,
+            'headers'     => [
+                'Accept'       => 'application/json',
                 "Content-Type" => " multipart/form-data;boundary=".$this->boundary,
-                "metaJson" => $filestr,
+                'Wechatpay-Serial' => $this->serial_no,
             ],
         ];
 
-        try {
-            return $client->request("POST", $uri, $options, $body);
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            $status_code = "";
-            $contents = "";
-            if ($e->hasResponse()) {
-                $status_code = $e->getResponse()->getStatusCode();
-                $contents = $e->getResponse()->getBody()->getContents();
-            }
+        $client = $this->getWechatPayClient();
 
-            apiSuc([], $contents, $status_code);
+
+        $response = $client->request("POST", "merchant/media/upload", $options);
+        $response = $this->decodeJson($response);
+        if (!empty($response["media_id"])) {
+            return $response["media_id"];
         }
+
+        return "";
     }
 
     /**
-     * getWechatPay 特约商户进件-提交申请单 v3
+     * getWechatPay 进件申请单提交
      *
      * @param $uri
      *
@@ -214,29 +237,22 @@ class Http
      */
     public function getWechatPay($uri)
     {
-
-        $client = $this->getWechatPayClient();
-
+        $wechatpayMiddleware = $this->getWechatpayMiddleware();
+        if ($uri == "certificates") {
+            $wechatpayMiddleware = $this->getWechatpayMiddlewareWithNoAuth();
+        }
+        $client = $this->getWechatPayClient($wechatpayMiddleware);
         $options = [
             'debug' => true,
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
+            'headers' => ['Accept' => 'application/json',],
+            'Wechatpay-Serial' => $this->serial_no,
         ];
 
         try {
             return $client->request("GET", $uri, $options);
         } catch (\GuzzleHttp\Exception\RequestException $e) {
-            $status_code = "";
-            $contents = "";
-            if ($e->hasResponse()) {
-                $status_code = $e->getResponse()->getStatusCode();
-                $contents = $e->getResponse()->getBody()->getContents();
-            }
-
-            apiSuc([], $contents, $status_code);
+            throw $e;
         }
-
     }
 
     /**
@@ -249,14 +265,13 @@ class Http
      */
     public function getWechatV3PublicCert()
     {
-
         $resp = $this->getWechatPay("certificates");
         if ($resp) {
             $resp = $this->encodeJson($resp);
-            $serial_no = $resp['data'][0]['serial_no'];
+            $this->serial_no = $resp['data'][0]['serial_no'];
             $encrypt_certificate = $resp['data'][0]['encrypt_certificate'];
 
-            $aes_util = new AesUtil($this->getApiv3Key());
+            $aes_util = new AesUtil($this->apiv3_key);
             $associatedData = $encrypt_certificate["associated_data"];
             $nonce = $encrypt_certificate["nonce"];
             $ciphertext = $encrypt_certificate["ciphertext"];
@@ -270,15 +285,12 @@ class Http
                 mkdir(pathinfo($this->wechat_public_cert_fullpath, PATHINFO_DIRNAME));
             }
             file_put_contents($this->wechat_public_cert_fullpath, $public_key);
-
-        } else {
-            $serial_no = "";
         }
-
-        $this->serial_no = $serial_no;
     }
 
     /**
+     * getEncrypt 进件敏感数据加密
+     *
      * @param $str
      *
      * @return string
@@ -304,7 +316,7 @@ class Http
      *
      * @param  ResponseInterface  $resp
      *
-     * @return array
+     * @return string
      */
     public function encodeJson(ResponseInterface $resp)
     {
@@ -315,9 +327,39 @@ class Http
             if (!empty($resp["message"])) {
                 $msg = $resp["message"];
             }
-            apiSuc([], $msg, 1);
+
+            return $msg;
         }
 
         return $resp;
+    }
+
+    /**
+     * getBody 获取图片上传 body
+     *
+     * @param $filestr
+     *
+     * @param  array  $imginfo
+     * @param $picturedata
+     *
+     * @return string
+     * @author  snowlyg
+     * @datetime  2020/4/11 21:40
+     */
+    public function getBody($filestr, array $imginfo, $picturedata)
+    {
+        $boundarystr = "--{$this->boundary}\r\n";
+        $out         = $boundarystr;
+        $out         .= 'Content-Disposition: form-data; name="meta";'."\r\n";
+        $out         .= 'Content-Type: application/json; charset=UTF-8'."\r\n";
+        $out         .= "\r\n";
+        $out         .= "".$filestr."\r\n";
+        $out         .= $boundarystr;
+        $out         .= 'Content-Disposition: form-data; name="file"; filename="'.$imginfo['basename'].'";'."\r\n";
+        $out         .= 'Content-Type: image/'.$imginfo['extension'].';'."\r\n";
+        $out         .= "\r\n";
+        $out         .= $picturedata."\r\n";
+        $out         .= "--{$this->boundary}--\r\n";
+        return $out;
     }
 }
