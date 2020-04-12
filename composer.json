@@ -1,31 +1,31 @@
 {
-    "name": "snowlyg/wechatpay-guzzle",
-    "description": "微信支付v3接口-商户进件提交，状态查询，以及图片上传",
-    "authors": [
-        {
-            "name": "snowlyg",
-            "email": "569616226@qq.com"
-        }
-    ],
-    "type": "library",
-    "keywords": [
-        "wechatpay"
-    ],
-    "homepage": "https://github.com/snowlyg/wechatpay-guzzle",
-    "license": "Apache-2.0",
-    "require": {
-        "php": ">=5.5",
-        "ext-openssl": "*",
-        "guzzlehttp/guzzle": "^6.3",
-        "wechatpay/wechatpay-guzzle-middleware": "^0.1.1",
-        "ext-json": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Snowlyg\\WechatPay\\": "src/"
-        }
-    },
-    "suggest": {
-        "ext-bcmath": "Require bcmath in php 5.* version."
+  "name": "snowlyg/wechatpay-guzzle",
+  "description": "微信支付v3接口-商户进件提交，状态查询，以及图片上传",
+  "authors": [
+    {
+      "name": "snowlyg",
+      "email": "569616226@qq.com"
     }
+  ],
+  "type": "library",
+  "keywords": [
+    "wechatpay"
+  ],
+  "homepage": "https://github.com/snowlyg/wechatpay-guzzle",
+  "license": "Apache-2.0",
+  "require": {
+    "php": ">=5.5",
+    "ext-openssl": "*",
+    "guzzlehttp/guzzle": "^6.3",
+    "ext-json": "*",
+    "ext-bcmath": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Snowlyg\\WechatPay\\": "src/"
+    }
+  },
+  "suggest": {
+    "ext-bcmath": "Require bcmath in php 5.* version."
+  }
 }

@@ -9,18 +9,16 @@
 namespace Snowlyg\WechatPay\Client;
 
 
-use app\common\model\ApplyStore;
-use app\common\service\XcxApi;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use Psr\Http\Message\ResponseInterface;
 use Snowlyg\WechatPay\NoopValidator;
-use WechatPay\GuzzleMiddleware\Util\AesUtil;
-use WechatPay\GuzzleMiddleware\WechatPayMiddleware;
-use WechatPay\GuzzleMiddleware\Util\PemUtil;
-use WechatPay\GuzzleMiddleware\WechatPayMiddlewareBuilder;
+use Snowlyg\WechatPay\Util\AesUtil;
+use Snowlyg\WechatPay\WechatPayMiddleware;
+use Snowlyg\WechatPay\Util\PemUtil;
+use Snowlyg\WechatPay\WechatPayMiddlewareBuilder;
 
 /**
  * Class Http
