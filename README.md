@@ -8,6 +8,13 @@
 + guzzlehttp/guzzle 6.0+
 
 > 注意：PHP < 7.2 需要安装 bcmath 扩展
+>
+
+##### 安装  composer
+```shell script
+  composer require snowlyg/wechatpay-guzzle
+```
+
 
 #### 使用方法
 ```php
