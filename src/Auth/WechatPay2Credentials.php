@@ -9,16 +9,17 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace Snowlyg\WechatPay\Auth;
+namespace WechatPay\GuzzleMiddleware\Auth;
 
 use Psr\Http\Message\RequestInterface;
-use Snowlyg\WechatPay\Credentials;
+use WechatPay\GuzzleMiddleware\Credentials;
+use WechatPay\GuzzleMiddleware\Auth\Signer;
 
 /**
  * WechatPay2Credentials
  *
  * @category Class
- * @package  Snowlyg\WechatPay\Auth
+ * @package  WechatPay\GuzzleMiddleware\Auth
  * @author   WeChat Pay Team
  * @link     https://pay.weixin.qq.com
  */
@@ -129,7 +130,6 @@ class WechatPay2Credentials implements Credentials
      * Build message to sign
      *
      * @param string $nonce Nonce string
-     * @param array $options options array
      * @param integer $timestamp Unix timestamp
      * @param RequestInterface $request Api request
      *
@@ -139,7 +139,7 @@ class WechatPay2Credentials implements Credentials
     {
         $body = '';
         if (array_key_exists("metaJson",$options)) {
-            $body =  $options["metaJson"];
+            $body = $options["metaJson"];
         } else {
             $bodyStream = $request->getBody();
             // TODO: handle non-seekable stream

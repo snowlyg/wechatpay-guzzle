@@ -18,7 +18,8 @@
 
 #### 使用方法
 ```php
-use GuzzleHttp\Exception\RequestException;use Snowlyg\WechatPay\Client\Http;
+use GuzzleHttp\Exception\RequestException;
+use Snowlyg\WechatPay\Client\Http;
 
 // 商户相关配置
 $merchantId = '1000100'; // 商户号

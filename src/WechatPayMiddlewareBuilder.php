@@ -9,12 +9,16 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace Snowlyg\WechatPay;
+namespace WechatPay\GuzzleMiddleware;
 
-use Snowlyg\WechatPay\Auth\PrivateKeySigner;
-use Snowlyg\WechatPay\Auth\CertificateVerifier;
-use Snowlyg\WechatPay\Auth\WechatPay2Credentials;
-use Snowlyg\WechatPay\Auth\WechatPay2Validator;
+use WechatPay\GuzzleMiddleware\Auth\WechatPay2CredentialsImg;
+use WechatPay\GuzzleMiddleware\Credentials;
+use WechatPay\GuzzleMiddleware\Validator;
+use WechatPay\GuzzleMiddleware\WechatPayMiddleware;
+use WechatPay\GuzzleMiddleware\Auth\PrivateKeySigner;
+use WechatPay\GuzzleMiddleware\Auth\CertificateVerifier;
+use WechatPay\GuzzleMiddleware\Auth\WechatPay2Credentials;
+use WechatPay\GuzzleMiddleware\Auth\WechatPay2Validator;
 
 /**
  * WechatPayMiddlewareBuilder
@@ -73,7 +77,7 @@ class WechatPayMiddlewareBuilder
      */
     public function withMerchantForImg($merchantId, $serialNo, $privateKey)
     {
-        $this->credentials = new WechatPay2Credentials($merchantId,
+        $this->credentials = new WechatPay2CredentialsImg($merchantId,
             new PrivateKeySigner($serialNo, $privateKey));
         return $this;
     }

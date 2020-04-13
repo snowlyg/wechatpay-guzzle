@@ -9,7 +9,7 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace Snowlyg\WechatPay\Auth;
+namespace WechatPay\GuzzleMiddleware\Auth;
 
 /**
  * Interface abstracting Verifier.

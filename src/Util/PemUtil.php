@@ -9,7 +9,7 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace Snowlyg\WechatPay\Util;
+namespace WechatPay\GuzzleMiddleware\Util;
 
 /**
  * Util for read private key and certificate.
