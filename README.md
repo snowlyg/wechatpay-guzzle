@@ -19,11 +19,45 @@
 #### 使用方法
 参考：[https://github.com/wechatpay-apiv3/wechatpay-guzzle-middleware/blob/master/README.md](https://github.com/wechatpay-apiv3/wechatpay-guzzle-middleware/blob/master/README.md)
 
-图片签名
+###### 图片数据获取
+```
+     // $filepath 图片地址
+     $imginfo     = pathinfo($filepath);
+     $picturedata = file_get_contents($filepath);
+     $sign        = hash('sha256', $picturedata);
+     $meta        = [
+          "filename" => $imginfo['basename'],
+           "sha256"   => $sign,
+      ];
+
+     $filestr = json_encode($meta);
+```
+
+###### 图片 body 生成
+```
+     public function getBody($filestr, array $imginfo, $picturedata)
+     {
+         $boundarystr = "--{$this->boundary}\r\n";
+         $out         = $boundarystr;
+         $out         .= 'Content-Disposition: form-data; name="meta";'."\r\n";
+         $out         .= 'Content-Type: application/json; charset=UTF-8'."\r\n";
+         $out         .= "\r\n";
+         $out         .= "".$filestr."\r\n";
+         $out         .= $boundarystr;
+         $out         .= 'Content-Disposition: form-data; name="file"; filename="'.$imginfo['basename'].'";'."\r\n";
+         $out         .= 'Content-Type: image/'.$imginfo['extension'].';'."\r\n";
+         $out         .= "\r\n";
+         $out         .= $picturedata."\r\n";
+         $out         .= "--{$this->boundary}--\r\n";
+         return $out;
+     }
+```
+
+###### 图片签名
 ```
  // 上传图片
     $resp = $client->request('POST', 'https://api.mch.weixin.qq.com/v3/...', [
-        'body' =>\GuzzleHttp\Psr7\stream_for("body的内容"),
+        'body' =>\GuzzleHttp\Psr7\stream_for($body),
         // meta的json串 ,签名使用
        "metaJson"     => '{ "filename": "filea.jpg", "sha256": " hjkahkjsjkfsjk78687dhjahdajhk " }',
         'headers' => [ 
@@ -31,6 +65,24 @@
                "Content-Type" => " multipart/form-data;boundary=boundary",
             ]
     ]);
+```
+
+
+###### 进件敏感数据加密
+```
+    public function getEncrypt($str)
+    {
+        $public_key = file_get_contents($this->wechat_public_cert);
+        $encrypted = '';
+        if (openssl_public_encrypt($str, $encrypted, $public_key, OPENSSL_PKCS1_OAEP_PADDING)) {
+            $sign = base64_encode($encrypted);
+        } else {
+            throw new Exception('encrypt failed');
+        }
+
+        return $sign;
+    }
+
 ```
 
 #### 开发插曲
