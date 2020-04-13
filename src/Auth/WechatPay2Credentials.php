@@ -9,17 +9,17 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware\Auth;
+namespace Snowlyg\WechatPay\Auth;
 
 use Psr\Http\Message\RequestInterface;
-use WechatPay\GuzzleMiddleware\Credentials;
-use WechatPay\GuzzleMiddleware\Auth\Signer;
+use Snowlyg\WechatPay\Credentials;
+use Snowlyg\WechatPay\Auth\Signer;
 
 /**
  * WechatPay2Credentials
  *
  * @category Class
- * @package  WechatPay\GuzzleMiddleware\Auth
+ * @package  Snowlyg\WechatPay\Auth
  * @author   WeChat Pay Team
  * @link     https://pay.weixin.qq.com
  */

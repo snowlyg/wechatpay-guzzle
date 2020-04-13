@@ -9,15 +9,15 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware;
+namespace Snowlyg\WechatPay;
 
 use app\api\controller\Pay;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use WechatPay\GuzzleMiddleware\Credentials;
-use WechatPay\GuzzleMiddleware\Validator;
-use WechatPay\GuzzleMiddleware\WechatPayMiddlewareBuilder;
+use Snowlyg\WechatPay\Credentials;
+use Snowlyg\WechatPay\Validator;
+use Snowlyg\WechatPay\WechatPayMiddlewareBuilder;
 
 /**
  * WechatPayMiddleware

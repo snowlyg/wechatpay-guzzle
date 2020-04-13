@@ -9,17 +9,17 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware\Auth;
+namespace Snowlyg\WechatPay\Auth;
 
 use Psr\Http\Message\ResponseInterface;
-use WechatPay\GuzzleMiddleware\Validator;
-use WechatPay\GuzzleMiddleware\Auth\Verifier;
+use Snowlyg\WechatPay\Validator;
+use Snowlyg\WechatPay\Auth\Verifier;
 
 /**
  * WechatPay2Validator
  *
  * @category Class
- * @package  WechatPay\GuzzleMiddleware\Auth
+ * @package  Snowlyg\WechatPay\Auth
  * @author   WeChat Pay Team
  * @link     https://pay.weixin.qq.com
  */

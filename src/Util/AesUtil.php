@@ -9,7 +9,7 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware\Util;
+namespace Snowlyg\WechatPay\Util;
 
 /**
  * Util for AEAD_AES_256_GCM.

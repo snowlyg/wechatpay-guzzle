@@ -9,7 +9,7 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware;
+namespace Snowlyg\WechatPay;
 
 use Psr\Http\Message\ResponseInterface;
 

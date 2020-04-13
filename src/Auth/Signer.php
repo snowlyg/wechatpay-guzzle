@@ -9,9 +9,9 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware\Auth;
+namespace Snowlyg\WechatPay\Auth;
 
-use WechatPay\GuzzleMiddleware\Auth\SignatureResult;
+use Snowlyg\WechatPay\Auth\SignatureResult;
 
 /**
  * Interface abstracting Signer.

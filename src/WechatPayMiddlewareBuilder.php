@@ -9,16 +9,16 @@
  * @link     https://pay.weixin.qq.com
  */
 
-namespace WechatPay\GuzzleMiddleware;
+namespace Snowlyg\WechatPay;
 
-use WechatPay\GuzzleMiddleware\Auth\WechatPay2CredentialsImg;
-use WechatPay\GuzzleMiddleware\Credentials;
-use WechatPay\GuzzleMiddleware\Validator;
-use WechatPay\GuzzleMiddleware\WechatPayMiddleware;
-use WechatPay\GuzzleMiddleware\Auth\PrivateKeySigner;
-use WechatPay\GuzzleMiddleware\Auth\CertificateVerifier;
-use WechatPay\GuzzleMiddleware\Auth\WechatPay2Credentials;
-use WechatPay\GuzzleMiddleware\Auth\WechatPay2Validator;
+use Snowlyg\WechatPay\Auth\WechatPay2CredentialsImg;
+use Snowlyg\WechatPay\Credentials;
+use Snowlyg\WechatPay\Validator;
+use Snowlyg\WechatPay\WechatPayMiddleware;
+use Snowlyg\WechatPay\Auth\PrivateKeySigner;
+use Snowlyg\WechatPay\Auth\CertificateVerifier;
+use Snowlyg\WechatPay\Auth\WechatPay2Credentials;
+use Snowlyg\WechatPay\Auth\WechatPay2Validator;
 
 /**
  * WechatPayMiddlewareBuilder
