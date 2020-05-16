@@ -13,6 +13,7 @@ namespace Snowlyg\WechatPay\Auth;
 
 use Psr\Http\Message\ResponseInterface;
 use Snowlyg\WechatPay\Validator;
+use Snowlyg\WechatPay\Auth\Verifier;
 
 /**
  * WechatPay2Validator

@@ -11,6 +11,9 @@
 
 namespace Snowlyg\WechatPay\Auth;
 
+use Snowlyg\WechatPay\Auth\Signer;
+use Snowlyg\WechatPay\Auth\SignatureResult;
+
 /**
  * PrivateKeySigner
  *

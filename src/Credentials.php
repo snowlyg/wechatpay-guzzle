@@ -31,7 +31,6 @@ interface Credentials
     /**
      * Get token of credentials
      *
-     * @param array $options options array
      * @param RequestInterface $request Api request
      *
      * @return string

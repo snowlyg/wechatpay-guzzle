@@ -11,6 +11,8 @@
 
 namespace Snowlyg\WechatPay\Auth;
 
+use Snowlyg\WechatPay\Auth\Verifier;
+
 /**
  * CertificateVerifier
  *

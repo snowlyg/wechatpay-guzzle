@@ -11,6 +11,7 @@
 
 namespace Snowlyg\WechatPay\Auth;
 
+use Snowlyg\WechatPay\Auth\SignatureResult;
 
 /**
  * Interface abstracting Signer.
