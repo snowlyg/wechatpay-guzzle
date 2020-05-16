@@ -23,7 +23,7 @@ class AesUtil
 {
     /**
      * AES key
-     *
+     *s
      * @var string
      */
     private $aesKey;
