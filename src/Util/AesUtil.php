@@ -11,6 +11,8 @@
 
 namespace Snowlyg\WechatPay\Util;
 
+use GuzzleHttp\Exception\InvalidArgumentException;
+
 /**
  * Util for AEAD_AES_256_GCM.
  *
