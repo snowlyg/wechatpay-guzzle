@@ -11,7 +11,6 @@
 
 namespace Snowlyg\WechatPay;
 
-use app\api\controller\Pay;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

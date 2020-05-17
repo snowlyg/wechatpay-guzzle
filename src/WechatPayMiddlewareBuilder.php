@@ -11,7 +11,6 @@
 
 namespace Snowlyg\WechatPay;
 
-use Snowlyg\WechatPay\Auth\WechatPay2CredentialsImg;
 use Snowlyg\WechatPay\Credentials;
 use Snowlyg\WechatPay\Validator;
 use Snowlyg\WechatPay\WechatPayMiddleware;
@@ -66,21 +65,6 @@ class WechatPayMiddlewareBuilder
         return $this;
     }
 
-    /**
-     * Set Merchant Infomation
-     *
-     * @param string            $merchantId   Merchant Id
-     * @param string            $serialNo     Merchant Certificate Serial Number
-     * @param string|resource   $privateKey   Merchant Certificate Private Key (string - PEM formatted key, or resource - key returned by openssl_get_privatekey)
-     *
-     * @return $this
-     */
-    public function withMerchantForImg($merchantId, $serialNo, $privateKey)
-    {
-        $this->credentials = new WechatPay2CredentialsImg($merchantId,
-            new PrivateKeySigner($serialNo, $privateKey));
-        return $this;
-    }
 
     /**
      * Set Merchant Credentials

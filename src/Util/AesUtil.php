@@ -11,8 +11,6 @@
 
 namespace Snowlyg\WechatPay\Util;
 
-use GuzzleHttp\Exception\InvalidArgumentException;
-
 /**
  * Util for AEAD_AES_256_GCM.
  *
@@ -40,7 +38,7 @@ class AesUtil
     public function __construct($aesKey)
     {
         if (strlen($aesKey) != self::KEY_LENGTH_BYTE) {
-            throw new InvalidArgumentException('无效的ApiV3Key，长度应为32个字节');
+            throw new \InvalidArgumentException('无效的ApiV3Key，长度应为32个字节');
         }
         $this->aesKey = $aesKey;
     }

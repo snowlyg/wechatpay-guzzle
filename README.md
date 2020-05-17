@@ -93,7 +93,9 @@
 >
 > 在微信开放社区找到很多朋友分享的代码，非常感谢他们。
 >
-> 还有微信官方文档的微信签名 sdk , [https://github.com/snowlyg/wechatpay-guzzle-middleware](https://github.com/snowlyg/wechatpay-guzzle-middleware) 。
+> 还有微信官方文档的微信签名 sdk , [https://github.com/snowlyg/wechatpay-guzzle-middleware](https://github.com/snowlyg/wechatpay-guzzle-middleware) 
+>
+
 
 
 #### 联系交流
