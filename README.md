@@ -1,6 +1,6 @@
 # wechatpay-guzzle
 
-#### 微信支付v3 接口-特约商户进件提交，状态查询，以及图片上传 ,  使用 [https://github.com/snowlyg/wechatpay-guzzle-middleware](https://github.com/snowlyg/wechatpay-guzzle-middleware) 实现微信签名认证。
+#### 微信支付v3 接口-特约商户进件提交，状态查询，以及图片上传 ,  使用 [https://github.com/snowlyg/wechatpay-guzzle](https://github.com/snowlyg/wechatpay-guzzle) 实现微信签名认证。
 
 ## 环境要求
 
