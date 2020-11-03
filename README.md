@@ -101,7 +101,7 @@
 #### 联系交流
 如果你发现了BUG或者有任何疑问、建议，请通过issue进行反馈。
 
-也可以加 QQ 群交流：676717248
+也可以加 QQ 群交流：676717248 （go 语言交流群，如果不想入群可以加 QQ 569616226 私聊）
 
 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=cc99ccf86be594e790eacc91193789746af7df4a88e84fe949e61e5c6d63537c"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Iris-go" title="Iris-go"></a>
 
